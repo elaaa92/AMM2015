@@ -3,6 +3,13 @@
     background-color: lightblue;
 }
 
+h1
+{
+    font-size: 30px;
+    font-family: Helvetica, Verdana, sans-serif;
+    color: lightseagreen;
+}
+
 /*
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
