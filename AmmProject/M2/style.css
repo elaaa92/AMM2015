@@ -3,7 +3,6 @@
     background-color: whitesmoke;
     font-family: sans-serif;
     color: black;
-    font-size: 18px;  
 }
 
 #logo
@@ -15,19 +14,25 @@
 
 h1
 {
-    font-size: 24px;
     color: royalblue;
 }
 
-h2, h3
+#Content1 h2, #Content2 h2
 {
     font-size: 22px;
     color: cornflowerblue;
 }
 
+#Sommario h2, nav h2
+{
+    font-size: 22px;
+    color: cadetblue;
+}
+
 h3
 {
     font-size: 20px;
+    color: cornflowerblue;
 }
 
 a
@@ -107,7 +112,6 @@ input:focus, textarea:focus
 
 table
 {
-    font-size: 14px;
     border-collapse: collapse;
     width: 100%;
 }
@@ -142,6 +146,8 @@ header > h1
     width: 100%;
     text-align: center;
     text-shadow: 2px 2px darkblue;
+    padding-top: 1%;
+    padding-bottom: 1%;
 }
 
 #Sommario
@@ -182,45 +188,72 @@ nav, nav *
 
 footer
 {
-    padding-left: 10%;
-    padding-right: 10%;
     display: block;
     clear: left;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 footer > *
 {
     text-align: center;
-    font-size: 14px;
     font-style: oblique;
     background-color: #e5ccff;
 }
 
 @media screen and (min-width: 1024px)
 { 
+    *
+    {
+        font-size: 18px;   
+    }
+    
+    h1
+    {
+        font-size: 24px;
+    }
+    
+    h2
+    {
+        font-size: 22px;
+        color: cornflowerblue;
+    }
+
+    h3
+    {
+        font-size: 20px;
+        color: cornflowerblue;
+    }
+    
+    table
+    {
+        font-size: 14px;
+    }
+    
     #Sommario
     {
         display: inline-block;
         float: left;
         width: 8%;
         padding-top: 2%;
-        padding-bottom: 30%;
+        height: 600px;
     }
     
    #Content1, #Content2
     {
         display: inline-block;
         float: left;
+        height: 600px;
     }
     
     #Content1
     {
-        width: 70%;
+        width: 71.5%;
     }
     
     #Content2
     {
-        width: 82%;
+        width: 81.5%;
     }
    
     nav 
@@ -229,19 +262,51 @@ footer > *
         clear: left;
         width: 8%;
         padding-top: 2%;
-        padding-bottom: 36%;
+        height: 600px;
     }
     
     footer
     {
-        padding-left: 30%;
         padding-right: 30%;
+        padding-left: 30%;
+    }
+    
+    footer *
+    {
+        font-size: 14px; 
     }
 }
 
 
 @media screen and (min-width: 481px) and (max-width: 1023px)
-{   
+{
+    *
+    {
+        font-size: 18px;   
+    }
+    
+    h1
+    {
+        font-size: 24px;
+    }
+    
+    h2
+    {
+        font-size: 22px;
+        color: cornflowerblue;
+    }
+
+    h3
+    {
+        font-size: 20px;
+        color: cornflowerblue;
+    }
+       
+    table
+    {
+        font-size: 14px;
+    }
+    
     #Sommario
     {
         display: inline-block;
@@ -249,12 +314,14 @@ footer > *
         width: 14%;
         padding-top: 2%;
         padding-bottom: 30%;
+        height: 600px;
     }
     
    #Content1, #Content2
     {
         display: inline-block;
         float: left;
+        height: 600px;
     }
     
     #Content1
@@ -278,21 +345,59 @@ footer > *
     }
     
     footer
-    {
+    {   
         padding-left: 30%;
         padding-right: 30%;
+    }
+    
+    footer *
+    {
+        font-size: 14px;        
     }
 }
 
 
 @media screen and (max-width: 481px)
-{
+{ 
+    *
+    {
+        font-size: 12px;   
+    }
+    
+    td > img
+    {
+        width: 20px;
+        height: 20px;
+    }
+    
+    h1
+    {
+        font-size: 20px;
+    }
+    
+    h2
+    {
+        font-size: 18px;
+        color: cornflowerblue;
+    }
+
+    h3
+    {
+        font-size: 16px;
+        color: cornflowerblue;
+    }
+    
     #Sommario, #Content1, #Content2, nav, footer
     {
         padding-top: 2%;
         padding-bottom:2%;
         margin-top: 6%;
         margin-bottom: 6%;
-    }
+        width: 96%;
+    }    
     
+    #footer
+    {
+        font-size: 6px;
+    }
 }
