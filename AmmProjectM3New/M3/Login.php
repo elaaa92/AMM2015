@@ -7,7 +7,7 @@ session_start();
 
 if(isset($_SESSION['ruolo']) && $_SERVER['REQUEST_URI']=='/AmmProjectM3/M3/login.php')
 {
-    reindirizza();
+    reindirizza(); 
 }
 else if(isset($_REQUEST['login']) && isset($_REQUEST['id']) && isset($_REQUEST['password']))
 {
