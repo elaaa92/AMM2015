@@ -1,4 +1,8 @@
 <?php
+include('./Model/UtenteCliente.php');
+include('./Model/UtenteVenditore.php');
+include('./Model/Articolo.php');
+include('./Model/Conto.php');
 session_start();
 
 if(isset($_SESSION['ruolo']) && $_SERVER['REQUEST_URI']=='/AmmProjectM3/M3/login.php')
@@ -29,8 +33,6 @@ else if(isset($_REQUEST['logout']))
 function reindirizza()
 {
     $ruolo=$_SESSION['ruolo'];
-    
-    echo 'ci sono';
 
     if($ruolo == 'cliente')
     {
@@ -46,8 +48,15 @@ function reindirizza()
 
 function login()
 {
-    if($_REQUEST['id']=='cliente' || $_REQUEST['id']=='venditore')
+    if($_REQUEST['id']=='cliente')   //fa un controllo e assegna il ruolo corretto
     {
+        $_SESSION['utente']=new UtenteCliente($_REQUEST['id'], $_REQUEST['password']);
+        $_SESSION['ruolo']=$_REQUEST['id']; 
+        return true;   
+    }
+    else if($_REQUEST['id']=='venditore')
+    {
+        $_SESSION['utente']=new UtenteVenditore($_REQUEST['id'], $_REQUEST['password']);
         $_SESSION['ruolo']=$_REQUEST['id'];    //fa un controllo e assegna il ruolo corretto
         return true;   
     }

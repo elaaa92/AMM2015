@@ -8,18 +8,17 @@ class UtenteCliente
     private $acquisti;
     private $nAcquisti;
     
-    public function __construct($id, $password, $conto, $acquisti, $nAcquisti)
+    public function __construct($id, $password)
     {
         $this->id = $id;
         $this->password = $password;
-        if(isset($conto))
-        {
-            $this->conto = $conto;
-        }
-        else
-        {
-            $this->conto = 0;
-        }
+        //Recupero da database conto e acquisti e numero acquisti
+        //$conto=query
+        $this->conto=new Conto(200);
+        //$articoliInVendita=query
+        $acquisti=array();
+        //$nAcquisti=query
+        $nAcquisti=array();
         if(isset($acquisti))
         {
             $this->acquisti = $acquisti;
@@ -70,12 +69,10 @@ class UtenteCliente
     
     public function compraArticolo($articolo, $quantita)
     {
-        $costo = $articolo.getPrezzo() * $quantita;
-        if($articolo.getNDisponibili() >= $quantita &&
-                $conto >= $costo)
+        $costo = $articolo->getPrezzo() * $quantita;
+        if($articolo->getDisponibili() >= $quantita && $this->conto->addebito($costo))
         {
-            $this->conto-=$costo;
-            $nome=$articolo.getNome();
+            $nome=$articolo->getNome();
             if(isset($this->acquisti[$nome]))
             {
                 $this->nAcquisti[$nome]+=$quantita;
@@ -85,7 +82,12 @@ class UtenteCliente
                 $this->nAcquisti[$nome]=$quantita;
                 $this->acquisti[$nome]=$articolo;
             }
-            $articolo.venditore.vendiArticolo($articolo, quantita);
+            $articolo->getVenditore()->vendiArticolo($articolo, $quantita);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

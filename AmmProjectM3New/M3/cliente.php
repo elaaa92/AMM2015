@@ -10,7 +10,7 @@
             <img src="../Immagini/Olympia.png" alt='Non disponibile' id='logo'/>
             <?php 
                 include("Login.php");
-                include("Cliente.php")
+                include("Cliente.php");
             ?>
         </header>
         <div id='Content2'>

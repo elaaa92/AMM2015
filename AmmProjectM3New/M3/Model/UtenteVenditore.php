@@ -8,18 +8,17 @@ class UtenteVenditore
     private $articoliInVendita;
     private $nDisponibili;
     
-    public function __construct($id, $password, $conto, $articoliInVendita)
+    public function __construct($id, $password)
     {
         $this->id = $id;
         $this->password = $password;
-        if(isset($conto))
-        {
-            $this->conto = $conto;
-        }
-        else
-        {
-            $this->conto = 0;
-        }
+        //Recupero da database conto e articoli in vendita e numero disponibili
+        //$conto=query
+        $this->conto=new Conto(0);
+        //$articoliInVendita=query
+        $articoliInVendita=array();
+        //$nDisponibili=query
+        $nDisponibili=array();
         if(isset($articoliInVendita))
         {
             $this->articoliInVendita = $articoliInVendita;
@@ -64,8 +63,8 @@ class UtenteVenditore
     }
     
     public function inserisciArticolo($articolo, $quantita)
-    {        
-        $nome=$articolo.getNome();
+    {
+        $nome=$articolo->getNome();
         if(isset($this->nDisponibili[$nome]))
         {
             $this->nDisponibili[$nome] += $quantita;
@@ -75,11 +74,12 @@ class UtenteVenditore
             $this->nDisponibili[$nome] = $quantita;
             $this->articoliInVendita[$nome] = $articolo;
         }
+        
     }
     
     public function rimuoviArticolo($articolo, $quantita)//da rifare
     {
-        $nome=$articolo.getNome();
+        $nome=$articolo->getNome();
         if(isset($this->nDisponibili[$nome]) 
                 && $this->nDisponibili[$nome] == $quantita)
         {
@@ -95,14 +95,14 @@ class UtenteVenditore
     
     public function vendiArticolo($articolo, $quantita)
     {
-        $guadagno = $articolo.getPrezzo() * $quantita;
-        rimuoviArticolo($articolo, $quantita);
-        $this->conto+=$guadagno;
+        $guadagno = $articolo->getPrezzo() * $quantita;
+        $this->rimuoviArticolo($articolo, $quantita);
+        $this->conto->accredito($guadagno);
     }
     
     public function getNDisponibili($articolo)
     {
-        $nome=$articolo.getNome();
+        $nome=$articolo->getNome();
         return $this->nDisponibili[$nome];
     }
 }
