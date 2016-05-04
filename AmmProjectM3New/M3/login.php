@@ -7,7 +7,7 @@
     </head>
     <body>
         <header>
-            <img src="../Immagini/Olympia.png" alt='Non disponibile' id='logo'/>
+            <img src="../Immagini/logo.png" alt='Non disponibile' id='logo'/>
             <h1> Login </h1>
         </header>
         <div id='Content2'>
@@ -24,13 +24,11 @@
         </div>
         <nav>
             <h2> Link Esterni </h2>
-            <p>
-                <a href='./descrizione.php'> Informazioni </a>
-                <br/>
-                <a href='./cliente.php'> Cliente </a>
-                <br/>
-                <a href='./venditore.php'>  Venditore </a>
-            </p>
+            <a href='./descrizione.php'> Informazioni </a>
+            <br/>
+            <a href='./cliente.php'> Cliente </a>
+            <br/>
+            <a href='./venditore.php'>  Venditore </a>
         </nav>
         <?php include("./footer.php"); ?>
     </body>

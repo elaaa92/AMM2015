@@ -7,7 +7,7 @@
     </head>
     <body>
         <header>
-            <img src="../Immagini/Olympia.png" alt='Non disponibile' id='logo'/>
+            <img src="../Immagini/logo.png" alt='Non disponibile' id='logo'/>
             <form>
                 <input type='submit' id='logout' name='logout' value='Logout'>
             </form>
@@ -16,11 +16,9 @@
         </header>
         <div id='Sommario'>
             <h2> Indice </h2>
-            <p>
-                <a href='#compra'> Compra </a>
-                <br/>
-                <a href='#vendi'> Vendi </a>
-            </p>
+            <a href='#compra'> Compra </a>
+            <br/>
+            <a href='#vendi'> Vendi </a>
         </div>
         <div id='Content1'>
                 <h1>Olympia Store</h1>
@@ -43,9 +41,7 @@
         </div>
         <nav>
             <h2> Link Esterni </h2>
-            <p>
-                <a href='./login.php'> Login </a>
-            </p>
+            <a href='./login.php'> Login </a>
         </nav>
         <?php include("./footer.php");?>
     </body>

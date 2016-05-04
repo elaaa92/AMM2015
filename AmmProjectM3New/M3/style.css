@@ -7,9 +7,9 @@
 
 #logo
 {
-    max-width: 100%;
-    height: auto;
-    
+    position: fixed;
+    left: 1%;
+    background-color: #8ac2e6;
 }
 
 h1
@@ -19,13 +19,11 @@ h1
 
 #Content1 h2, #Content2 h2
 {
-    font-size: 22px;
     color: cornflowerblue;
 }
 
 #Sommario h2, nav h2
 {
-    font-size: 22px;
     color: cadetblue;
 }
 
@@ -53,10 +51,12 @@ a:visited, footer > *
 
 #Content2 form
 {
-    padding-top: 2%;
-    padding-bottom: 2%;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding-left: 4%;
+    padding-right: 4%;
     background-color: #e6ffe6;
     border: 1px solid cadetblue;
 }
@@ -112,10 +112,12 @@ input:focus, textarea:focus
 
 table
 {
+    margin-left: 1%;
+    margin-right: 1%;
+    padding-left: 4%;
+    padding-right: 4%;
     border-collapse: collapse;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: scroll;
+    width: 98%;
 }
 
 th, td
@@ -145,30 +147,34 @@ td > img
 
 header > h1
 {
-    width: 100%;
+    position: fixed;
     text-align: center;
     text-shadow: 2px 2px darkblue;
-    padding-top: 1%;
-    padding-bottom: 1%;
+}
+
+#logout
+{
+    position: fixed;
 }
 
 #Sommario
 {
-    margin-bottom: 2%;
+    position: fixed;
     padding-left: 2%;
     padding-right: 2%;
     text-align: center;
     border: 1px solid cadetblue;
 }
 
-#Sommario, #Sommario *
+#Sommario
 {  
     background-color: #e6ffe6;
 }
 
 #Content1, #Content2
 {
-    margin-bottom: 2%;
+    position: fixed;
+    overflow-y: auto;
     padding-left: 2%;
     padding-right: 2%;
     text-align: center;
@@ -176,55 +182,76 @@ header > h1
 
 nav
 {
-    margin-bottom: 2%;
+    position: fixed;
     padding-left: 2%;
     padding-right: 2%;
     text-align: center;
     border: 1px solid cadetblue;
 }
 
-nav, nav *
+nav
 {
+    display: inline;
     background-color: #ccffcc;  
+}
+
+nav *, #Sommario *
+{
+    background-color: transparent;  
 }
 
 footer
 {
-    display: block;
-    clear: left;
+    position: fixed;
+     display: inline;
     padding-left: 2%;
     padding-right: 2%;
-}
-
-footer > *
-{
     text-align: center;
     font-style: oblique;
     background-color: #e5ccff;
+    color: slategray;
 }
 
 @media screen and (min-width: 1024px)
 { 
     *
     {
-        font-size: 18px;   
+        font-size: 16px;   
+    }
+    
+    #logo
+    {
+        padding-left: 40%;
+        padding-right: 40%;
+        width: 18%;
+        height: 16%;
+    }
+    
+    header > h1
+    {
+        top: 18%;
+        width: 98%;
+    }
+    
+    #logout
+    {
+        bottom: 83%;
+        right: 2%;
     }
     
     h1
     {
-        font-size: 24px;
+        font-size: 21px;
     }
     
     h2
     {
-        font-size: 22px;
-        color: cornflowerblue;
+        font-size: 20px;
     }
 
     h3
     {
-        font-size: 20px;
-        color: cornflowerblue;
+        font-size: 19px;
     }
     
     table
@@ -234,47 +261,50 @@ footer > *
     
     #Sommario
     {
-        display: inline-block;
-        float: left;
+        left: 1%;
+        top: 28%;
         width: 8%;
+        height: 66%;
         padding-top: 2%;
-        height: 600px;
+        margin-bottom: 2%;
     }
     
-   #Content1, #Content2
+    #Content1, #Content2
     {
-        display: inline-block;
-        float: left;
-        height: 600px;
+        top: 28%;
+        height: 60%;
+        margin-bottom: 2%;
     }
     
     #Content1
     {
-        width: 71.5%;
+        left: 14%;
+        width: 68%;
     }
     
     #Content2
     {
-        width: 81.5%;
+        left: 1%;
+        width: 84%;
     }
    
     nav 
     {
-        display: inline-block;
-        clear: left;
+        top: 28%;
+        right: 1%;
         width: 8%;
+        height: 66%;
         padding-top: 2%;
-        height: 600px;
+        margin-bottom: 2%;
+        font-size: 14px;
     }
     
     footer
     {
-        padding-right: 30%;
-        padding-left: 30%;
-    }
-    
-    footer *
-    {
+        left: 39%;
+        bottom: 1%;
+        width: 20%;
+        height: 9%;
         font-size: 14px; 
     }
 }
@@ -284,72 +314,115 @@ footer > *
 {
     *
     {
-        font-size: 18px;   
+        font-size: 14px;   
+    }
+    
+    #logo
+    {
+        padding-left: 40%;
+        padding-right: 40%;
+        width: 18%;
+        height: 12%;
+    }
+    
+    header > h1
+    {
+        top: 13%;
+        width: 98%;
+    }
+    
+    
+    #logout
+    {
+        bottom: 88%;
+        right: 2%;
     }
     
     h1
     {
-        font-size: 24px;
+        font-size: 16px;
     }
     
     h2
     {
-        font-size: 22px;
-        color: cornflowerblue;
+        font-size: 15px;
     }
 
     h3
     {
-        font-size: 20px;
-        color: cornflowerblue;
+        font-size: 14px;
     }
        
     table
     {
-        font-size: 14px;
+        font-size: 13px;
+    }
+    
+    table img
+    {
+        width: 50px;
+        height: 50px;
     }
     
     #Sommario
     {
-        display: inline-block;
-        float: left;
+        left: 1%;
+        top: 21%;
         width: 14%;
+        height: 52.5%;
         padding-top: 2%;
-        padding-bottom: 30%;
-        height: 600px;
     }
     
-   #Content1, #Content2
+    #Content1, #Content2
     {
-        display: inline-block;
-        float: left;
-        height: 600px;
+        top: 21%;   
+        height: 56.5%;
     }
     
     #Content1
     {
+        left: 20%;
         width: 77%;        
     }
     
     #Content2
     {
-        width:96%;
+        left: 1%;
+        width:94%;
     }
    
     nav 
     {
-        display: inline-block;
-        clear: left;
-        width: 96%;
-        margin-top: 4%;
-        margin-bottom: 4%;
-        padding: 2%;
+        left: 1%;
+        top: 79%;
+        width: 94%;
+        height: 11%;
+    }
+    
+    nav h2
+    {
+        position: relative;
+        float:left;
+        display: inline;
+        left: 20%;
+    }
+    
+    nav a
+    {
+        position: relative;
+        padding-top: 1%;
+        left: 12%;
+        display: inline;
     }
     
     footer
-    {   
-        padding-left: 30%;
-        padding-right: 30%;
+    {
+        left: 1%;
+        top: 91%;
+        width: 94%;
+        height: 8%;
+        font-size: 12px;
+        
     }
     
     footer *
@@ -366,6 +439,15 @@ footer > *
         font-size: 12px;   
     }
     
+    #logo
+    {
+        top: 1%;
+        height: 14%;
+        width: 35%;
+        padding-left: 32.5%;
+        padding-right: 32.5%; 
+    }
+    
     td > img
     {
         width: 20px;
@@ -374,32 +456,96 @@ footer > *
     
     h1
     {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     h2
     {
-        font-size: 18px;
-        color: cornflowerblue;
+        font-size: 16px;
     }
 
     h3
     {
-        font-size: 16px;
-        color: cornflowerblue;
+        font-size: 14px;
+    }
+    
+    #logout
+    {
+        top: 10%;
+        right: 2%;
+    }
+    
+    header > h1
+    {
+        top: 14%;
+    }
+    
+    #Sommario
+    {
+        top: 16%;
+        height: 10%;
+    }
+    
+    #Sommario h2
+    {
+        position: relative;
+        float:left;
+        display: inline;
+        left: 22%;
+    }
+    
+    #Sommario a
+    {
+        position: relative;
+        top: 18%;
+        left: 18%;
+        display: inline;
+    }
+    
+    #Content1
+    {
+        top: 27%;
+        height: 55%;
+    }
+    
+    #Content2
+    {
+        top: 16%;
+        height: 66%;
     }
     
     #Sommario, #Content1, #Content2, nav, footer
     {
-        padding-top: 2%;
-        padding-bottom:2%;
-        margin-top: 6%;
-        margin-bottom: 6%;
-        width: 96%;
-    }    
+        left: 1%;
+        width: 93.5%;
+    }
     
-    #footer
+    nav 
     {
-        font-size: 6px;
+        top: 83%;
+        height: 7%;
+    }
+    
+    nav h2
+    {
+        position: relative;
+        float:left;
+        display: inline;
+        left: 20%;
+    }
+    
+    nav a
+    {
+        position: relative;
+        top: 1%;
+        left: 12%;
+        display: inline;
+    }
+    
+    footer
+    {
+        top: 92%;
+        height: 7%;
+        font-size: 10px;
     }
 }
