@@ -8,7 +8,6 @@ if(!isset($_SESSION['ruolo']))
 else if($_SESSION['ruolo']=='venditore')
 {
     $state = 1;
-    showLogout();
     echo "<h1> Errore </h1>";
 }
 else 
@@ -22,13 +21,7 @@ else
     {
         unset($_REQUEST['listaArticoli']);
     }
-    showLogout();
     echo "<h1> Prodotti </h1>";
-}
-
-function showLogout()
-{
-    echo "<form> <input type='submit' id='logout' name='logout' value='Logout'> </form>";
 }
 
 function content($state)
@@ -47,7 +40,50 @@ function content($state)
         }
         case 2:
         { 
-            $lista=Articolo::oggettiInVendita();
+            if(isset($_REQUEST['ricerca']))
+            {
+                if(isset($_REQUEST['filtro']) && isset($_REQUEST['chiave']))
+                {
+                    $chiave=$_REQUEST['chiave'];
+                    $filtro=$_REQUEST['filtro'];
+                }
+                else
+                {
+                    $filtro='tutto';
+                }
+                switch ($filtro)
+                {
+                    case 'nome':
+                    {
+                        $lista = Articolo::cercaNome($chiave);
+                        break;
+                    }
+                    case 'id':
+                    {
+                        $lista = Articolo::cercaId($chiave);
+                        break;
+                    }
+                    case 'categoria':
+                    {
+                        $lista = Articolo::cercaCategoria($chiave);
+                        break;
+                    }
+                    case 'venditore':
+                    {
+                        $lista = Articolo::cercaVenditore($chiave);
+                        break;
+                    }
+                    case 'tutto':
+                    {
+                        $lista=Articolo::oggettiInVendita();
+                        break;
+                    }
+                }
+            }
+            else 
+            {
+                $lista=Articolo::oggettiInVendita();
+            } 
             if(isset($_REQUEST['listaArticoli']))
             {
                 compila($lista);
@@ -82,6 +118,20 @@ function content($state)
 
 function compila($lista)
 {   
+
+    echo "<h2> Cerca </h2>"
+    . "<form>"
+        . "<select name='filtro' size='1'>"
+            ."<option value='tutto'>Tutto</option>"
+            . "<option value='nome'>Nome</option>"
+            . "<option value='id'>Id</option>"
+            . "<option value='categoria'>Categoria</option>"
+            . "<option value='venditore'>Venditore</option>"
+        . "</select>"
+        . "<input type='text' id='chiave' name='chiave'/>"
+        . "<input type='submit' id='ricerca' name='ricerca' value='Cerca'/>"
+    . "</form>";
+    
     echo "
             <table>
                 <tr>

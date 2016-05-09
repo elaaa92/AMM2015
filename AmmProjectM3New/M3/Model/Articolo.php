@@ -12,7 +12,7 @@ class Articolo
     private static $listaArticoli;
     private static $listaVenditori;
 
-    public function __construct($venditore, $nome, $prezzo, $descrizione, $disponibili, $immagine) 
+    public function __construct($venditore, $categoria, $nome, $prezzo, $descrizione, $disponibili, $immagine) 
     {
         $this->venditore = $venditore;
         if(isset(self::$listaArticoli))
@@ -23,6 +23,7 @@ class Articolo
         {
             self::$listaArticoli=array();
         }
+        $this->categoria=$categoria;
         $this->nome = $nome; 
         $this->prezzo = $prezzo;
         $this->descrizione = $descrizione;
@@ -48,20 +49,25 @@ class Articolo
     {
         self::inizializzaVenditori();
         self::$listaArticoli = array();
-        new Articolo(self::$listaVenditori[0], "Scarpe Nike", 60, "Belle scarpe", 10, "../Immagini/scarpenike.png");
-        new Articolo(self::$listaVenditori[1], "Scarpe Converse", 40, "Belle scarpe", 5, "../Immagini/scarpeconverse.png");
-        new Articolo(self::$listaVenditori[0], "Guanti Nike", 20, "Bei guanti", 2, "../Immagini/guantinike.png");
-        new Articolo(self::$listaVenditori[2], "Scarpe Reebok", 30, "Belle scarpe", 30, "../Immagini/scarpereebok.png");
-        new Articolo(self::$listaVenditori[3], "Tavola da surf", 500, "Bella tavola", 100, "../Immagini/tavoladasurf.png");
-        new Articolo(self::$listaVenditori[4], "Mountain bike", 230, "Bella bici", 8, "../Immagini/mountainbike.png");
-        new Articolo(self::$listaVenditori[3],  "Giacca da snowboard", 40, "Bella giacca", 3, "../Immagini/giaccasnowboard.png");
-        new Articolo(self::$listaVenditori[5], "Guanti Adidas", 20, "Bei guanti", 13, "../Immagini/guantiadidas.png");
-        new Articolo(self::$listaVenditori[6], "Canottiera", 30, "Bella canottiera", 50, "../Immagini/canottiera.png");
+        new Articolo(self::$listaVenditori[0], "Corsa", "Scarpe Nike", 60, "Belle scarpe", 10, "../Immagini/scarpenike.png");
+        new Articolo(self::$listaVenditori[1], "Casual", "Scarpe Converse", 40, "Belle scarpe", 5, "../Immagini/scarpeconverse.png");
+        new Articolo(self::$listaVenditori[0], "Sport invernali", "Guanti Nike", 20, "Bei guanti", 2, "../Immagini/guantinike.png");
+        new Articolo(self::$listaVenditori[2], "Corsa", "Scarpe Reebok", 30, "Belle scarpe", 30, "../Immagini/scarpereebok.png");
+        new Articolo(self::$listaVenditori[3], "Surf", "Tavola da surf", 500, "Bella tavola", 100, "../Immagini/tavoladasurf.png");
+        new Articolo(self::$listaVenditori[4], "Ciclismo", "Mountain bike", 230, "Bella bici", 8, "../Immagini/mountainbike.png");
+        new Articolo(self::$listaVenditori[3], "Sport invernali", "Giacca da snowboard", 40, "Bella giacca", 3, "../Immagini/giaccasnowboard.png");
+        new Articolo(self::$listaVenditori[5], "Sport invernali", "Guanti Adidas", 20, "Bei guanti", 13, "../Immagini/guantiadidas.png");
+        new Articolo(self::$listaVenditori[6], "Abbigliamento", "Canottiera", 30, "Bella canottiera", 50, "../Immagini/canottiera.png");
     }
     
     public function getVenditore()
     {
         return $this->venditore;
+    }
+    
+    public function getCategoria()
+    {
+        return $this->categoria;
     }
     
     public function getId()
@@ -118,6 +124,23 @@ class Articolo
         return self::$listaArticoli; 
     }
     
+    public static function cercaNome($chiave)
+    {
+        if(!isset(self::$listaArticoli))
+        {
+            self::inizializza();
+        }
+        $find = array();
+        foreach(self::$listaArticoli as $articolo)
+        {
+            if(stristr($articolo->getNome(), $chiave))
+            {
+                $find[] = $articolo;
+            }
+        }
+        return $find;
+    }
+    
     public static function cercaVenditore($chiave)
     {
         if(!isset(self::$listaArticoli))
@@ -127,7 +150,7 @@ class Articolo
         $find = array();
         foreach(self::$listaArticoli as $articolo)
         {
-            if($articolo->getVenditore()->getId() == $chiave)
+            if(stristr($articolo->getVenditore()->getId(), $chiave))
             {
                 $find[] = $articolo;
             }
@@ -144,7 +167,7 @@ class Articolo
         $find = array();
         foreach(self::$listaArticoli as $articolo)
         {
-            if($articolo->getNome() == $chiave)
+            if(stristr($articolo->getCategoria(), $chiave))
             {
                 $find[] = $articolo;
             }

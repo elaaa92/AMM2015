@@ -21,7 +21,7 @@
             <h2> Link Esterni </h2>
             <a href='./descrizione.php'> Informazioni </a>
             <br/>
-            <a href='./login.php'> Login </a>
+            <?php showLogin() ?>
         </nav>
         <?php include("./footer.php"); ?>
     </body>

@@ -8,9 +8,6 @@
     <body>
         <header>
             <img src="../Immagini/logo.png" alt='Non disponibile' id='logo'/>
-            <form>
-                <input type='submit' id='logout' name='logout' value='Logout'>
-            </form>
             <?php include("Login.php")?>
             <h1> About </h1>
         </header>
@@ -41,7 +38,7 @@
         </div>
         <nav>
             <h2> Link Esterni </h2>
-            <a href='./login.php'> Login </a>
+            <?php showLogin() ?>
         </nav>
         <?php include("./footer.php");?>
     </body>

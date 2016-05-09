@@ -46,6 +46,23 @@ function reindirizza()
     }
 }
 
+function showLogin()
+{
+    if(!isset($_SESSION['ruolo']))
+    {
+            echo "<a href='login.php'> Login </a> <br/>";
+    }
+    else
+    {
+        if($_SERVER['REQUEST_URI']=='/AmmProjectM3/M3/descrizione.php')
+        {
+            echo "<a href='login.php'> Home utente </a> <br/>";
+        }
+        
+        echo "<a href='descrizione.php?logout=true' id='logout'> Logout </a> <br/>";
+    }
+}
+
 function login()
 {
     if($_REQUEST['id']=='cliente')   //fa un controllo e assegna il ruolo corretto

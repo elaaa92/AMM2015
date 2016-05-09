@@ -152,11 +152,6 @@ header > h1
     text-shadow: 2px 2px darkblue;
 }
 
-#logout
-{
-    position: fixed;
-}
-
 #Sommario
 {
     position: fixed;
@@ -203,7 +198,7 @@ nav *, #Sommario *
 footer
 {
     position: fixed;
-     display: inline;
+    display: inline;
     padding-left: 2%;
     padding-right: 2%;
     text-align: center;
@@ -231,12 +226,6 @@ footer
     {
         top: 18%;
         width: 98%;
-    }
-    
-    #logout
-    {
-        bottom: 83%;
-        right: 2%;
     }
     
     h1
@@ -329,13 +318,6 @@ footer
     {
         top: 13%;
         width: 98%;
-    }
-    
-    
-    #logout
-    {
-        bottom: 88%;
-        right: 2%;
     }
     
     h1
@@ -467,12 +449,6 @@ footer
     h3
     {
         font-size: 14px;
-    }
-    
-    #logout
-    {
-        top: 10%;
-        right: 2%;
     }
     
     header > h1
