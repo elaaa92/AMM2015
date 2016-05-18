@@ -11,19 +11,26 @@ class Conto
     
     public function addebito($costo)
     {
-        if($costo>$this->saldo)
-        {
-            return false;
+        if($costo<=$this->saldo)
+        {   
+            $this->saldo-=$costo;
+            return true;
         }
         else
         {
-            $this->saldo-=$costo;
-            return true;
+            return false;
         }
     }
     
     public function accredito($valore)
     {
         $this->saldo+=$valore;
+        
+        return $this->saldo;
+    }
+    
+    public function getSaldo()
+    {
+        return $this->saldo;
     }
 }

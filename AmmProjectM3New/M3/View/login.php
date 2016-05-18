@@ -3,15 +3,15 @@
 <html>
     <head>
         <title>Login</title>
-        <?php include("meta.php") ?>
+        <?php include("./meta.php") ?>
     </head>
     <body>
         <header>
-            <img src="../Immagini/logo.png" alt='Non disponibile' id='logo'/>
+            <img src="../../Immagini/logo.png" alt='Non disponibile' id='logo'/>
             <h1> Login </h1>
         </header>
         <div id='Content2'>
-            <?php include("Login.php");?>   
+            <?php include("../Controller/Login.php");?>   
             <form method='post'>
                 <label for='id'> Username </label>
                 <input type='text' id='id' name='id'>

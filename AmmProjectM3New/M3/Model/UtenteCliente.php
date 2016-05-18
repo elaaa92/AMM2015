@@ -12,28 +12,19 @@ class UtenteCliente
     {
         $this->id = $id;
         $this->password = $password;
-        //Recupero da database conto e acquisti e numero acquisti
-        //$conto=query
-        $this->conto=new Conto(200);
-        //$articoliInVendita=query
-        $acquisti=array();
-        //$nAcquisti=query
-        $nAcquisti=array();
-        if(isset($acquisti))
+        $mysqli= new mysqli();
+        $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
+        if($mysqli->connect_errno!= 0)
         {
-            $this->acquisti = $acquisti;
+            $idErrore= $mysqli->connect_errno;
+            $msg= $mysqli->connect_error;
+            $this->conto=new Conto(0);
         }
         else
         {
-            $this->acquisti = array();
-        }
-        if(isset($nAcquisti))
-        {
-            $this->nAcquisti = $nAcquisti;
-        }
-        else
-        {
-            $this->nAcquisti = array();
+            $data=$mysqli->query("select conto from utenti where id='$this->id'")->fetch_array();
+            $this->conto=new Conto($data['conto']);
+            mysqli_close($mysqli);
         }
     }
     
@@ -57,37 +48,95 @@ class UtenteCliente
         return $this->conto;
     } 
     
-    public function getAcquisti()
-    {
-        return $this->acquisti;
-    }
-    
-    public function getNAcquisti()
-    {
-        return $this->nAcquisti;
-    }
-    
     public function compraArticolo($articolo, $quantita)
     {
-        $costo = $articolo->getPrezzo() * $quantita;
-        if($articolo->getDisponibili() >= $quantita && $this->conto->addebito($costo))
+        //Step 1
+        $mysqli= new mysqli();
+        $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
+        if($mysqli->connect_errno!= 0)
         {
-            $nome=$articolo->getNome();
-            if(isset($this->acquisti[$nome]))
-            {
-                $this->nAcquisti[$nome]+=$quantita;
-            }
-            else
-            {
-                $this->nAcquisti[$nome]=$quantita;
-                $this->acquisti[$nome]=$articolo;
-            }
-            $articolo->getVenditore()->vendiArticolo($articolo, $quantita);
-            return true;
+            $idErrore= $mysqli->connect_errno;
+            $msg= $mysqli->connect_error;
+            return -1;
         }
         else
         {
-            return false;
+            $idArticolo = $articolo->getId();
+            
+            $mysqli->autocommit(false);
+            $result=$mysqli->query("select disponibili from articoli where id=$idArticolo")->fetch_array();
+
+            if($mysqli->errno != 0 ) //Errore in una query
+            {
+                $mysqli->rollback();
+                mysqli_close($mysqli);
+                return -1;
+            }
+            
+            $disponibili=$result['disponibili'];
+            if($disponibili > $quantita)
+            {
+                $mysqli->query("update articoli set disponibili=($disponibili-$quantita) where id=$idArticolo");
+            }
+            else if($disponibili == $quantita)
+            {
+                $mysqli->query("delete from articoli where id='$idArticolo'");
+            }
+            else
+            {
+                //Non ha effettuato alcuna modifica
+                mysqli_close($mysqli);
+                return 1;
+            }   
+            
+            if($mysqli->errno != 0 )
+            {
+                $mysqli->rollback();
+                mysqli_close($mysqli);
+                return -1;
+            }
+        
+            //Step 2
+
+            $costo = $articolo->getPrezzo() * $quantita;
+            $result=$this->conto->addebito($costo);
+            
+            if(!$result)
+            {
+                $mysqli->rollback();
+                mysqli_close($mysqli);
+                return 2;
+            }
+            
+            $saldo=$this->conto->getSaldo();
+            
+            $mysqli->query("update utenti set conto=$saldo where id='$this->id'");
+
+            if($mysqli->errno != 0 )
+            {
+                $mysqli->rollback();
+                mysqli_close($mysqli);
+                return -1;
+            }
+
+            //Step 3
+
+            $venditore=$articolo->getVenditore();
+            $idVenditore = $venditore->getId();
+            $venditore->getConto()->accredito($costo);
+            
+            $mysqli->query("update utenti set conto=$saldo where id='$idVenditore'");
+
+            if($mysqli->errno != 0 )
+            {
+                $mysqli->rollback();
+                mysqli_close($mysqli);
+                return -1;
+            }
+            
+            $mysqli->commit();
+            return 0;
         }
+        
     }
 }

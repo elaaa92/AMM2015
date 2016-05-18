@@ -3,12 +3,12 @@
 <html>
     <head>
         <title>Descrizione</title>
-        <?php include("meta.php") ?>
+        <?php include("./meta.php") ?>
     </head>
     <body>
         <header>
-            <img src="../Immagini/logo.png" alt='Non disponibile' id='logo'/>
-            <?php include("Login.php")?>
+            <img src="../../Immagini/logo.png" alt='Non disponibile' id='logo'/>
+            <?php include("../Controller/Login.php")?>
             <h1> About </h1>
         </header>
         <div id='Sommario'>
@@ -38,7 +38,7 @@
         </div>
         <nav>
             <h2> Link Esterni </h2>
-            <?php showLogin() ?>
+            <?php mostraLogin() ?>
         </nav>
         <?php include("./footer.php");?>
     </body>

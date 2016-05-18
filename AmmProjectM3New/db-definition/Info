@@ -1,0 +1,20 @@
+Entità Utente (Cliente e Venditore)
+	Attributi: 
+		a. Id (1-1)
+		b. Password (1-N)
+		c. Conto (1-N)
+		d. Tipologia (1-N)
+
+Relazione Acquista (Utente – Articolo, N – N)
+	Attributi: Quantità
+
+Entità Articolo
+	Attributi:
+		a. Id (1-1)
+		b. Venditore (N-N)
+		c, Categoria (1-N)
+		d. Nome (1-N)
+		e. Prezzo (1-N)
+		f. Descrizione (1-N)
+		g. Disponibili (1-N)
+		h. Immagine (1-N)

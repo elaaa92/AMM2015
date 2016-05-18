@@ -3,6 +3,7 @@
 class Articolo 
 {
     private $venditore;
+    private $categoria;
     private $id;
     private $nome;
     private $prezzo;
@@ -11,53 +12,20 @@ class Articolo
     private $immagine;
     private static $listaArticoli;
     private static $listaVenditori;
-
-    public function __construct($venditore, $categoria, $nome, $prezzo, $descrizione, $disponibili, $immagine) 
+   
+    public function __construct($id, $venditore, $categoria, $nome, $prezzo, $descrizione, $disponibili, $immagine) 
     {
+        //In fase di creazione di un nuovo oggetto l'id ha un valore standard da aggiornare al 
+        //momento dell'aggiunta
+        //Quando invece si crea un oggetto a partire dai dati del database l'id è impostato
+        $this->id=$id;
         $this->venditore = $venditore;
-        if(isset(self::$listaArticoli))
-        {
-            $this->id = count(self::$listaArticoli);
-        }
-        else
-        {
-            self::$listaArticoli=array();
-        }
         $this->categoria=$categoria;
         $this->nome = $nome; 
         $this->prezzo = $prezzo;
         $this->descrizione = $descrizione;
         $this->disponibili = $disponibili;
         $this->immagine = $immagine;
-        self::$listaArticoli[] = $this;
-        self::$listaVenditori[]=$venditore;
-    }
-    
-    public static function inizializzaVenditori()
-    {
-        self::$listaVenditori=array();
-        self::$listaVenditori[]=new UtenteVenditore("Nike", "1234");
-        self::$listaVenditori[]=new UtenteVenditore("Converse", "1234");
-        self::$listaVenditori[]=new UtenteVenditore("Reebok", "1234");
-        self::$listaVenditori[]=new UtenteVenditore("Burton", "1234");
-        self::$listaVenditori[]=new UtenteVenditore("MTB", "1234");
-        self::$listaVenditori[]=new UtenteVenditore("Adidas", "1234");
-        self::$listaVenditori[]=new UtenteVenditore("SportsWear", "1234");
-    }
-    
-    public static function inizializza()
-    {
-        self::inizializzaVenditori();
-        self::$listaArticoli = array();
-        new Articolo(self::$listaVenditori[0], "Corsa", "Scarpe Nike", 60, "Belle scarpe", 10, "../Immagini/scarpenike.png");
-        new Articolo(self::$listaVenditori[1], "Casual", "Scarpe Converse", 40, "Belle scarpe", 5, "../Immagini/scarpeconverse.png");
-        new Articolo(self::$listaVenditori[0], "Sport invernali", "Guanti Nike", 20, "Bei guanti", 2, "../Immagini/guantinike.png");
-        new Articolo(self::$listaVenditori[2], "Corsa", "Scarpe Reebok", 30, "Belle scarpe", 30, "../Immagini/scarpereebok.png");
-        new Articolo(self::$listaVenditori[3], "Surf", "Tavola da surf", 500, "Bella tavola", 100, "../Immagini/tavoladasurf.png");
-        new Articolo(self::$listaVenditori[4], "Ciclismo", "Mountain bike", 230, "Bella bici", 8, "../Immagini/mountainbike.png");
-        new Articolo(self::$listaVenditori[3], "Sport invernali", "Giacca da snowboard", 40, "Bella giacca", 3, "../Immagini/giaccasnowboard.png");
-        new Articolo(self::$listaVenditori[5], "Sport invernali", "Guanti Adidas", 20, "Bei guanti", 13, "../Immagini/guantiadidas.png");
-        new Articolo(self::$listaVenditori[6], "Abbigliamento", "Canottiera", 30, "Bella canottiera", 50, "../Immagini/canottiera.png");
     }
     
     public function getVenditore()
@@ -115,89 +83,152 @@ class Articolo
         return $this->immagine;
     }
     
-    public static function oggettiInVendita()
+    public function aggiungi() //Aggiunge l'articolo al database
     {
-        if(!isset(self::$listaArticoli))
+        $mysqli= new mysqli();
+        $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
+        if($mysqli->connect_errno!= 0)
         {
-            self::inizializza();
+            $idErrore= $mysqli->connect_errno;
+            $msg= $mysqli->connect_error;
+            error_log("Errore nella connessione al server $idErrore: $msg", 0);
+            echo "Errore nella connessione $msg";  
+            return -1;
         }
-        return self::$listaArticoli; 
-    }
-    
-    public static function cercaNome($chiave)
-    {
-        if(!isset(self::$listaArticoli))
-        {
-            self::inizializza();
-        }
-        $find = array();
-        foreach(self::$listaArticoli as $articolo)
-        {
-            if(stristr($articolo->getNome(), $chiave))
+        else
+        { 
+            $nomeVenditore=$this->venditore->getId();
+            $match=$mysqli->query("select * from articoli where venditore='$nomeVenditore' and nome='$this->nome'");
+            echo $mysqli->error;
+            if($match->num_rows > 0)
             {
-                $find[] = $articolo;
-            }
-        }
-        return $find;
-    }
-    
-    public static function cercaVenditore($chiave)
-    {
-        if(!isset(self::$listaArticoli))
-        {
-            self::inizializza();
-        }
-        $find = array();
-        foreach(self::$listaArticoli as $articolo)
-        {
-            if(stristr($articolo->getVenditore()->getId(), $chiave))
-            {
-                $find[] = $articolo;
-            }
-        }
-        return $find;
-    }
-    
-    public static function cercaCategoria($chiave)
-    {
-        if(!isset(self::$listaArticoli))
-        {
-            self::inizializza();
-        }
-        $find = array();
-        foreach(self::$listaArticoli as $articolo)
-        {
-            if(stristr($articolo->getCategoria(), $chiave))
-            {
-                $find[] = $articolo;
-            }
-        }
-        return $find;
-    }
-    
-    public static function cercaId($chiave)
-    {
-        if(!isset(self::$listaArticoli))
-        {
-            self::inizializza();
-        }
-        $find = array();
-        foreach(self::$listaArticoli as $articolo)
-        {
-            if($articolo->getId() == $chiave)
-            {
-                $find[] = $articolo;
-            }
-        }
-        return $find;
-    }
-    
-    public static function venditori()
-    {
-        if(!isset(self::$listaVenditori))
-        {
-            self::inizializzaVenditori();
-        }
-    }
+                $found=$match->fetch_array();
 
+                $this->id=$found['id'];
+                mysqli_close($mysqli);
+                return 0;
+            }
+            else
+            {
+                $this->id=$mysqli->query("select * from articoli")->num_rows;
+            
+
+                $result=$mysqli->query("insert into articoli (id, venditore, categoria, nome, prezzo,"
+                . " descrizione, disponibili, immagine) values (default, '$nomeVenditore', "
+                . "'$this->categoria', '$this->nome', $this->prezzo, '$this->descrizione',"
+                . " $this->disponibili, '$this->immagine')");
+
+                mysqli_close($mysqli);
+                return 1;
+            }
+        }
+    }
+    
+    public function rimuovi()
+    {
+        $mysqli= new mysqli();
+        $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
+        if($mysqli->connect_errno!= 0)
+        {
+            $idErrore= $mysqli->connect_errno;
+            $msg= $mysqli->connect_error;
+            error_log("Errore nella connessione al server $idErrore: $msg", 0);
+            echo "Errore nella connessione $msg";
+            return false;
+        }
+        else
+        {
+            $mysqli->query("delete from articoli where id='$this->id'");
+            mysqli_close($mysqli);
+            return true;
+        }
+    }
+    
+    public function modifica()      //La funzione viene chiamata sull'articolo modificato 
+    {
+        $mysqli= new mysqli();
+        $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
+        if($mysqli->connect_errno!= 0)
+        {
+            $idErrore= $mysqli->connect_errno;
+            $msg= $mysqli->connect_error;
+            error_log("Errore nella connessione al server $idErrore: $msg", 0);
+            echo "Errore nella connessione $msg";    
+            return false;
+        }
+        else
+        {
+            $nomeVenditore=$this->venditore->getId();
+            $mysqli->query("update articoli set venditore='$nomeVenditore', "
+                . "categoria='$this->categoria', nome='$this->nome', prezzo=$this->prezzo, "
+                . "descrizione='$this->descrizione', disponibili=$this->disponibili, "
+                . "immagine='$this->immagine' where id=$this->id");
+            mysqli_close($mysqli);
+            return true;
+        }
+    }
+    
+    public static function oggettiInVendita($nomeVenditore, $filtro, $chiave)
+    {
+        $mysqli= new mysqli();
+        $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
+        if($mysqli->connect_errno!= 0)
+        {
+            $idErrore= $mysqli->connect_errno;
+            $msg= $mysqli->connect_error;
+            error_log("Errore nella connessione al server $idErrore: $msg", 0);
+            echo "Errore nella connessione $msg";    
+            return null;
+        }
+        else
+        {
+            $query="select articoli.id,articoli.venditore,articoli.categoria,articoli.nome,"
+                    . "articoli.prezzo,articoli.descrizione,articoli.disponibili,articoli.immagine,"
+                    . "utenti.password,utenti.conto from articoli inner join utenti on articoli.venditore=utenti.id";
+            $cond="";
+            if($nomeVenditore != null)
+            {
+                $cond=" where articoli.venditore='$nomeVenditore'";
+            }
+            if($filtro != 'tutto')
+            {
+                if(!isset($cond))
+                {
+                    $cond=" where articoli." . $filtro . "='$chiave'";  //la chiave è una stringa dentro la query
+                }
+                else
+                {
+                    $cond.=" and articoli." . $filtro . "='$chiave'";
+                }
+            }
+            $lista=$mysqli->query($query . $cond);
+            if($lista->num_rows > 0)
+            {
+                mysqli_close($mysqli);
+                return self::creaLista($lista);
+            }
+            else
+            {
+                mysqli_close($mysqli);
+                return null;
+            }
+        }
+    }
+    
+    
+    public static function creaLista($lista)
+    {
+        $listaArticoli = [];
+        while($elemento = $lista->fetch_array())
+        {
+            $idArticolo=$elemento['id'];
+            $venditoreArticolo=new UtenteVenditore ($elemento['venditore'],$elemento['password'],
+            $elemento['conto']);
+            $listaArticoli["$idArticolo"] = new Articolo ($idArticolo, $venditoreArticolo, 
+            $elemento['categoria'], $elemento['nome'], $elemento['prezzo'],
+            $elemento['descrizione'], $elemento['disponibili'], 
+            $elemento['immagine']);
+        }
+        return $listaArticoli;
+    }
 }
