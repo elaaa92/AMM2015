@@ -17,10 +17,6 @@ else                                        //Se il ruolo è corretto
     {
         $_REQUEST['listaArticoli']=true;    //Se non è stato scelto un articolo in particolare o non si è cliccato
     }                                       //sul link compra si abilita la visualizzazione della lista articoli (default)
-    else 
-    {
-        unset($_REQUEST['listaArticoli']);  //Altrimenti si disabilita
-    }
     mostraTitolo('Prodotti');
 }
 
@@ -94,5 +90,4 @@ function content($state)                    //La funzione compila la sezione pri
             break;
         }
     }
-}   
-
+}

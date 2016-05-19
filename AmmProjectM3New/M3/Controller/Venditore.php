@@ -175,5 +175,3 @@ function modifica()             //Aggiorna la lista e visualizza il riepilogo
         vMsg('Errore di connessione');
     }
 }
-
-

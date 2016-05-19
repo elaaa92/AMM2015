@@ -96,4 +96,3 @@ function logout()                                                           //Ch
         session_destroy();
     }
 }
-?>
