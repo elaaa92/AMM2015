@@ -9,13 +9,13 @@ session_start();
 
 if(isset($_SESSION['ruolo']) && $_SERVER['REQUEST_URI']=='/AmmProjectM3/M3/View/login.php')
 {
-    reindirizza();
-}
+    reindirizza();  //Se è stato efffettuato il login e ci si trova nella pagina di login l'utente viene immediatamente
+}                   //reindirizzato (questo script è incluso anche in venditore e in cliente)
 else if(isset($_REQUEST['login']) && isset($_REQUEST['id']) && isset($_REQUEST['password']))
 {
-    if(!login())
+    if(!login())    //Se tutto è settato tenta il login con le credenziali inserite
     {
-        vMsg('Autenticazione fallita');
+        vMsg('Autenticazione fallita'); //Se fallisce fa il logout (cioè resetta la sessione)
         logout();
     }
     else
@@ -23,16 +23,16 @@ else if(isset($_REQUEST['login']) && isset($_REQUEST['id']) && isset($_REQUEST['
         reindirizza();
     }
 }
-else if(isset($_REQUEST['logout']))
+else if(isset($_REQUEST['logout']))     //Richiesta esplicita di logout tramite link
 {
     unset($_REQUEST['login']);
     unset($_REQUEST['logout']);
     logout();
-    header("location: ./descrizione.php");
+    header("location: ./descrizione.php");  //Reindirizzamento alla home
     exit;
 }
 
-function reindirizza()
+function reindirizza()                      //A seconda del ruolo il reindirizzamento è differente
 {
     $ruolo=$_SESSION['ruolo'];
 
@@ -48,7 +48,7 @@ function reindirizza()
     }
 }
 
-function login()
+function login()                        //Confronta i dati inseriti con quelli del database
 {
         $mysqli= new mysqli();
         $mysqli->connect(Settings::$db_host, Settings::$db_user,Settings::$db_password,Settings::$db_name);
@@ -69,25 +69,25 @@ function login()
 
                 if($utente['tipologia'] == 'cliente')
                 {
-                    $_SESSION['utente']=new UtenteCliente($id, $password); 
-                }
+                    $_SESSION['utente']=new UtenteCliente($id, $password);  //Crea l'oggetto utente del tipo corretto
+                }                                                           //e lo mantiene in sessione
                 else
                 {
                     $_SESSION['utente']=new UtenteVenditore($id, $password);
                 }
                 
-                $_SESSION['ruolo']=$utente['tipologia'];
-                return true;
+                $_SESSION['ruolo']=$utente['tipologia'];                    //Salva la tipologia su una variabile di 
+                return true;                                                //sessione a parte - Operazione riuscita
             }
             else
             {
-                return false;
+                return false;                                               //Se non trova nulla lo comunica al chiamante   
             }
             mysqli_close($mysqli);
         }
 }
 
-function logout()
+function logout()                                                           //Chiude e resetta la sessione
 {
     $_SESSION = array();
     if(session_id() !="" || isset($_COOKIE[session_name()]))

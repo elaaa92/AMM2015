@@ -1,72 +1,73 @@
 <?php
 
-if(!isset($_SESSION['ruolo']))
+if(!isset($_SESSION['ruolo']))      //Se non è impostato il ruolo (cioè non è stato effettuato il login)
 {
    $state = 0;
-   mostraTitolo('Errore');
+   mostraTitolo('Errore');          //Le echo per il momento stanno tutte su commonView
 }
-else if($_SESSION['ruolo']=='venditore')
+else if($_SESSION['ruolo']=='venditore')    //Se il ruolo impostato è quello sbagliato
 {
     $state = 1;
     mostraTitolo('Errore');
 }
-else 
+else                                        //Se il ruolo è corretto
 {
     $state = 2;
     if(!isset($_REQUEST['idArticolo']) && !isset($_REQUEST['compra']))
     {
-        $_REQUEST['listaArticoli']=true;
-    }
+        $_REQUEST['listaArticoli']=true;    //Se non è stato scelto un articolo in particolare o non si è cliccato
+    }                                       //sul link compra si abilita la visualizzazione della lista articoli (default)
     else 
     {
-        unset($_REQUEST['listaArticoli']);
+        unset($_REQUEST['listaArticoli']);  //Altrimenti si disabilita
     }
     mostraTitolo('Prodotti');
 }
 
-function content($state)
+function content($state)                    //La funzione compila la sezione principale
 {
-    switch ($state)
+    switch ($state)                         //Stato 0 e 1 sono di errore
     {
-        case 0:
+        case 0:                             //Non loggato
         {
-            vMsg('Accesso non effettuato');
+            vMsg('Accesso non effettuato'); //La funzione stampa un messaggio e un eventuale link di reindirizzamento
             break;
         }
-        case 1:
+        case 1:                             //Venditore intruso
         {
             vMsg('Accesso negato');
             break;
         }
-        case 2:
+        case 2:                             //Se ci si è correttamente loggati come cliente
         { 
             if(isset($_REQUEST['ricerca']) && isset($_REQUEST['filtro']) && isset($_REQUEST['chiave']))
             {
                 $filtro=$_REQUEST['filtro'];
                 $chiave=$_REQUEST['chiave'];
             }
-            else
-            {
+            else                            //Se si entra per la prima volta, ci si trova su una funzionalità diversa dalla
+            {                               //visualizzazione lista, o si è lasciato un campo vuoto la lista è completa
                 $filtro='tutto';
                 $chiave='tutto';
             }
-            $lista=Articolo::oggettiInVendita(null,$filtro,$chiave);
-            if(isset($_REQUEST['listaArticoli']))
+            $lista=Articolo::oggettiInVendita(null,$filtro,$chiave);    //Il primo parametro identifica il venditore
+            if(isset($_REQUEST['listaArticoli']))                       //Se si è richiesta la lista
             {
-                vLista($lista, 'cliente');
+                vLista($lista, 'cliente');                              //Visualizza la lista
             }
-            else if(isset($_REQUEST['idArticolo']))
+            else if(isset($_REQUEST['idArticolo']))                     //Se si è scelto un elemento tramite link compra
             {
                 $id=$_REQUEST['idArticolo'];
-                $_SESSION['articolo'] = $lista["$id"];
-                vDescrizione();
-                mostraFormAcquisto();
+                $_SESSION['articolo'] = $lista["$id"];                  //Recupera l'elemento e lo inserisce in sessione
+                vDescrizione();                                         //Mostra la descrizione
+                mostraFormAcquisto();                                   //Mostra i tasti per l'acquisto
             }
-            else if(isset($_SESSION['articolo']) && isset($_REQUEST['compra']) && isset($_REQUEST['quantita']))
+            else if(isset($_SESSION['articolo']) && isset($_REQUEST['compra']) //Se si è premuto sul tasto compra
+            && isset($_REQUEST['quantita']))                                   //e si è scelta la quantità
             {
                 $risultato=$_SESSION['utente']->compraArticolo($_SESSION['articolo'],$_REQUEST['quantita']);
-                vDescrizione();
-                switch ($risultato)
+                vDescrizione();                                                 //Tenta l'acquisto, fa un resoconto
+                switch ($risultato)                                             //Visualizza il risultato
                 {
                     case -1:
                     {

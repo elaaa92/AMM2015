@@ -3,7 +3,7 @@
 if(!isset($_SESSION['ruolo']))              //L'utente non è loggato
 {
    $state = 0;
-   mostraTitolo('Errore');
+   mostraTitolo('Errore');                  //I messaggi sono visualizzati da commonView
 }
 else if($_SESSION['ruolo']=='cliente')      //L'utente è un cliente
 {
@@ -18,7 +18,7 @@ else if(isset($_REQUEST['idArticolo']))     //E' stato selezionato un articolo d
 else if(isset($_REQUEST['inserimento']))      //Si vuole aggiungere un nuovo elemento (visualizza form)
 {
     $state = 3;
-    $_SESSION['modalita']='inserimento';
+    $_SESSION['modalita']='inserimento';      //Una variabile di sessione determina la scelta fra alcune azioni
     mostraTitolo('Inserisci nuovo oggetto');   
 }
 else if(isset($_REQUEST['modifica']))       //Si vuole modificare un elemento (visualizza form)
@@ -43,16 +43,16 @@ else                                        //Lista dei propri articoli (default
     mostraTitolo('Lista oggetti in vendita');
 }
 
-function content($state)
+function content($state)                    //Imposta la sezione principale della pagina
 {
     switch ($state)
     {
-        case 0:                 //Non loggato
+        case 0:                             //Non loggato
         {
-            vMsg('Accesso non effettuato');
+            vMsg('Accesso non effettuato'); //La funzione stampa un messaggio e un eventuale link di reindirizzamento
             break;
         }
-        case 1:                 //Cliente intruso
+        case 1:                             //Cliente intruso
         {
             vMsg('Accesso negato');
             break;
@@ -61,18 +61,19 @@ function content($state)
         {
             $nomeVenditore=$_SESSION['utente']->getId();
             $idArticolo=$_REQUEST['idArticolo'];
-            $lista=Articolo::oggettiInVendita($nomeVenditore,'id',$idArticolo);
+            $lista=Articolo::oggettiInVendita($nomeVenditore,'id',$idArticolo); 
+            //Il nome venditore è un ulteriore filtro
             $_SESSION['articolo']=reset($lista);
             //L'unico articolo con quell'id è il primo elemento della lista
             vDescrizione();
-            mostraFormGestione();
+            mostraFormGestione();       //Tasti modifica ed eliminazione
             vMsg('');
             break;
         }
         case 3:                 //Form di aggiunta nuovo elemento
         {
-            vForm(false);       //Il booleano indica l'abilitazione della modalità modifica
-            vMsg('');
+            vForm(false);       //Mosta il form di aggiunta, il booleano indica l'abilitazione della modalità modifica
+            vMsg('');           //Mostra il link di reindirizzamento ma senza messaggio
             break;
         }
         case 4:                 //Form di modifica elemento esistente
@@ -101,19 +102,17 @@ function content($state)
         {            
             if(isset($_REQUEST['categoria']) && isset($_REQUEST['nome']) 
             && isset($_REQUEST['img']) && isset($_REQUEST['descr']) && isset($_REQUEST['prezzo']) 
-            && isset($_REQUEST['disponibili']))
+            && isset($_REQUEST['disponibili']))         //Se tutti i campi sono compilati
             {
-                if($_SESSION['modalita']=='inserimento')
+                if($_SESSION['modalita']=='inserimento')   //Crea un nuovo oggetto, l'id verrà impostato dal db
                 {
-                     //In fase di creazione l'id oggetto è inizialmente impostato a 0: il valore viene
-                    //impostato al momento dell'inserimento
                     $_SESSION['articolo']=new Articolo(0, $_SESSION['utente'], $_REQUEST['categoria'], $_REQUEST['nome'], 
                     $_REQUEST['prezzo'], $_REQUEST['descr'], $_REQUEST['disponibili'], $_REQUEST['img']);
                     inserimento();
                 }
                 else
                 {
-                    $id=$_SESSION['articolo']->getId();
+                    $id=$_SESSION['articolo']->getId();     //Crea un nuovo oggetto coi nuovi dati e vecchio id
                     $_SESSION['articolo']=new Articolo($id, $_SESSION['utente'], $_REQUEST['categoria'], $_REQUEST['nome'], 
                     $_REQUEST['prezzo'], $_REQUEST['descr'], $_REQUEST['disponibili'], $_REQUEST['img']);
                     modifica();
@@ -124,19 +123,20 @@ function content($state)
         }
         case 7:                 //Visualizzazione articoli del venditore
         {
-            if(isset($_REQUEST['ricerca']) && isset($_REQUEST['filtro']) && isset($_REQUEST['chiave']))
+            if(isset($_REQUEST['ricerca']) && isset($_REQUEST['filtro']) //Se si è effettuata una ricerca si usa il filtro
+            && isset($_REQUEST['chiave']))
             {
                 $filtro=$_REQUEST['filtro'];
                 $chiave=$_REQUEST['chiave'];
             }
-            else
-            {
-                $filtro='tutto';
+            else                                                        //Se invece si è appena entrati nella home
+            {                                                           //venditore o non si sono inseriti tutti i campi
+                $filtro='tutto';                                        //si mostra tutto
                 $chiave='tutto';
             }
             $nomeVenditore=$_SESSION['utente']->getId();
-            $lista=Articolo::oggettiInVendita($nomeVenditore,$filtro,$chiave);
-            vLista($lista, 'venditore');
+            $lista=Articolo::oggettiInVendita($nomeVenditore,$filtro,$chiave);  //Tutti gli articoli del venditore
+            vLista($lista, 'venditore');                                //Visualizza la lista
             break;
         }
     }
@@ -148,7 +148,7 @@ function inserimento()          //Aggiorna la lista e visualizza il riepilogo
     $result=$_SESSION['utente']->inserisciArticolo($_SESSION['articolo']);
     if($result == 1)
     {
-        vDescrizione();
+        vDescrizione();         //Riepilogo
         vMsg('Articolo inserito!');
     }
     else if($result == 0)
