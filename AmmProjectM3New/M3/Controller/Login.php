@@ -9,7 +9,7 @@ session_start();
 
 if(isset($_SESSION['ruolo']) && $_SERVER['REQUEST_URI']=='/AmmProjectM3/M3/View/login.php')
 {
-    reindirizza();  //Se è stato efffettuato il login e ci si trova nella pagina di login l'utente viene immediatamente
+    reindirizza();  //Se è stato effettuato il login e ci si trova nella pagina di login l'utente viene immediatamente
 }                   //reindirizzato (questo script è incluso anche in venditore e in cliente)
 else if(isset($_REQUEST['login']) && isset($_REQUEST['id']) && isset($_REQUEST['password']))
 {

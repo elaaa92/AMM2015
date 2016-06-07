@@ -185,12 +185,11 @@ class Articolo
             $query="select articoli.id,articoli.venditore,articoli.categoria,articoli.nome,"
                     . "articoli.prezzo,articoli.descrizione,articoli.disponibili,articoli.immagine,"
                     . "utenti.password,utenti.conto from articoli inner join utenti on articoli.venditore=utenti.id";
-            $cond="";
             if($nomeVenditore != null)
             {
                 $cond=" where articoli.venditore='$nomeVenditore'";
             }
-            if($filtro != 'tutto')
+            if($filtro != 'tutto' && $chiave != 'tutto')
             {
                 if(!isset($cond))
                 {
@@ -200,6 +199,28 @@ class Articolo
                 {
                     $cond.=" and articoli." . $filtro . "='$chiave'";
                 }
+            }
+            else if($filtro == 'tutto' && $chiave != 'tutto') //filtro non impostato ma chiave impostata
+            {
+                if(!isset($cond))
+                {
+                    $cond=" where articoli.nome like '%$chiave%' or articoli.nome like 'chiave%' "
+                    . "or articoli.nome like '%chiave'"
+                    . " or articoli.descrizione like '%$chiave%' or articoli.descrizione like '$chiave%'"
+                    . "or articoli.descrizione like '%$chiave'";
+                    
+                }
+                else
+                {
+                    $cond.=" and (articoli.nome like '%$chiave%' or articoli.nome like 'chiave%' "
+                    . "or articoli.nome like '%chiave'"
+                    . " or articoli.descrizione like '%$chiave%' or articoli.descrizione like '$chiave%'"
+                    . "or articoli.descrizione like '%$chiave')";
+                }
+            }
+            if(!isset($cond))
+            {
+                $cond='';
             }
             $lista=$mysqli->query($query . $cond);
             if($lista->num_rows > 0)

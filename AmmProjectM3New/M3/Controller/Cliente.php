@@ -1,5 +1,5 @@
 <?php
-
+        
 if(!isset($_SESSION['ruolo']))      //Se non è impostato il ruolo (cioè non è stato effettuato il login)
 {
    $state = 0;
@@ -36,22 +36,12 @@ function content($state)                    //La funzione compila la sezione pri
         }
         case 2:                             //Se ci si è correttamente loggati come cliente
         { 
-            if(isset($_REQUEST['ricerca']) && isset($_REQUEST['filtro']) && isset($_REQUEST['chiave']))
-            {
-                $filtro=$_REQUEST['filtro'];
-                $chiave=$_REQUEST['chiave'];
-            }
-            else                            //Se si entra per la prima volta, ci si trova su una funzionalità diversa dalla
-            {                               //visualizzazione lista, o si è lasciato un campo vuoto la lista è completa
-                $filtro='tutto';
-                $chiave='tutto';
-            }
+            $filtro='tutto';
+            $chiave='tutto';
+            
             $lista=Articolo::oggettiInVendita(null,$filtro,$chiave);    //Il primo parametro identifica il venditore
-            if(isset($_REQUEST['listaArticoli']))                       //Se si è richiesta la lista
-            {
-                vLista($lista, 'cliente');                              //Visualizza la lista
-            }
-            else if(isset($_REQUEST['idArticolo']))                     //Se si è scelto un elemento tramite link compra
+            
+            if(isset($_REQUEST['idArticolo']))                     //Se si è scelto un elemento tramite link compra
             {
                 $id=$_REQUEST['idArticolo'];
                 $_SESSION['articolo'] = $lista["$id"];                  //Recupera l'elemento e lo inserisce in sessione
@@ -86,6 +76,10 @@ function content($state)                    //La funzione compila la sezione pri
                         break;
                     }
                 }
+            }
+            else if(isset($_REQUEST['listaArticoli']))
+            {
+                vLista($lista, null);                         //Visualizza la lista
             }
             break;
         }

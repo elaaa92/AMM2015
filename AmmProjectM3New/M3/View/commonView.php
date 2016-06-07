@@ -22,23 +22,31 @@ function mostraLogin()
     }
 }
 
-function vLista($lista, $tipoUtente)
-{   
+function vLista($lista, $nomeVenditore)  //Il nome venditore è settato solo se è stato il venditore a effettuare
+{                                        //la ricerca
     echo "<h2> Cerca </h2>"
-    . "<form>"
-        . "<select name='filtro' size='1'>"
+    . "<form id='cerca'>"
+        . "<label for='chiave'> Filtra </label>"
+        . "<input type='text' id='chiave' name='chiave'/>"
+        . "<select name='filtro' id='filtro' size='1'>"
             ."<option value='tutto'>Tutto</option>"
             . "<option value='nome'>Nome</option>"
             . "<option value='id'>Id</option>"
             . "<option value='categoria'>Categoria</option>";
-    if($tipoUtente == 'cliente')
+    if($nomeVenditore == null)
     {
-        echo "<option value='venditore'>Venditore</option>";
+        echo "<option value='venditore'>Venditore</option>"
+        . "</select>"
+        . "<input type='hidden' id='venditore' name='venditore' value=''>";
+    }
+    else
+    {
+        echo "</select>"
+        . "<input type='hidden' id='venditore' name='venditore' value='$nomeVenditore'>";
     }
        
         echo "</select>"
-        . "<input type='text' id='chiave' name='chiave'/>"
-        . "<input type='submit' id='ricerca' name='ricerca' value='Cerca'/>"
+        . "<input type='button' id='ricerca' name='ricerca' value='Cerca'/>"
     . "</form>";
     
     echo "
@@ -48,7 +56,7 @@ function vLista($lista, $tipoUtente)
                     <th>Foto</th>
                     <th>Disponibili</th>
                     <th>Prezzo</th>";
-    if($tipoUtente == 'cliente')
+    if($nomeVenditore == null)
     {
         echo "<th>Compra</th>";
     }
@@ -69,7 +77,7 @@ function vLista($lista, $tipoUtente)
                 <td>" . $elemento->getDisponibili(). "</td>
                 <td>" . $elemento->getPrezzo() . "</td>
                 <td>";
-            if($tipoUtente == 'cliente')
+            if($nomeVenditore == null)
             {
                 echo "<a href='cliente.php?idArticolo=" . $elemento->getId() . "' > Compra"; 
             }
@@ -80,7 +88,7 @@ function vLista($lista, $tipoUtente)
             echo "</a> </td> </tr>";
         }
     }
-    if($tipoUtente == 'venditore')
+    if($nomeVenditore != null)
     {
         echo "<tr> <td> Nuovo articolo </td> <td> <img/> </td>  <td> - </td>  <td> - </td>"
         . "<td> <a href='./venditore.php?inserimento=true'> Inserisci </a> </td> </tr>"; 

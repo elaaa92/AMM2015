@@ -123,20 +123,9 @@ function content($state)                    //Imposta la sezione principale dell
         }
         case 7:                 //Visualizzazione articoli del venditore
         {
-            if(isset($_REQUEST['ricerca']) && isset($_REQUEST['filtro']) //Se si è effettuata una ricerca si usa il filtro
-            && isset($_REQUEST['chiave']))
-            {
-                $filtro=$_REQUEST['filtro'];
-                $chiave=$_REQUEST['chiave'];
-            }
-            else                                                        //Se invece si è appena entrati nella home
-            {                                                           //venditore o non si sono inseriti tutti i campi
-                $filtro='tutto';                                        //si mostra tutto
-                $chiave='tutto';
-            }
             $nomeVenditore=$_SESSION['utente']->getId();
-            $lista=Articolo::oggettiInVendita($nomeVenditore,$filtro,$chiave);  //Tutti gli articoli del venditore
-            vLista($lista, 'venditore');                                //Visualizza la lista
+            $lista=Articolo::oggettiInVendita($nomeVenditore,'tutto','tutto');  //Tutti gli articoli del venditore
+            vLista($lista, $nomeVenditore);                        //Visualizza la lista
             break;
         }
     }
